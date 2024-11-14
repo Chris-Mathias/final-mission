@@ -4,7 +4,7 @@ import Navbar from "../components/navbar";
 
 export default function Catalog() {
   return (
-    <div className="min-h-screen w-full bg-gradient-radial">
+    <div className="min-h-screen w-full">
       <Navbar />
     </div>
   );
