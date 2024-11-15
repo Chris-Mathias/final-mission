@@ -6,7 +6,7 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 export default function Navbar() {
   return (
-    <div className="flex items-center w-full h-16 gap-12 bg-transparent">
+    <div className="fixed top-0 left-0 flex items-center w-full h-16 gap-12 bg-neutral-900 shadow-neutral-950 shadow-lg z-20">
       <img className="flex-none h-12 ml-4" src="aeroflix.svg"></img>
       <MenuTitle>Início</MenuTitle>
       <MenuTitle>Minha Lista</MenuTitle>
