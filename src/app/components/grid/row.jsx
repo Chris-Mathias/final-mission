@@ -79,12 +79,12 @@ export default function Row(props) {
 
   return (
     <div className="relative flex flex-col gap-6">
-      <h1 className="ml-8 text-white text-2xl font-poppins font-bold">
+      <h1 className="ml-8 text-neutral-100 text-2xl font-poppins font-bold">
         {props.name}:
       </h1>
       <div className="relative">
         <button
-          className={`absolute left-[-96px] top-1/2 text-[96px] transform -translate-y-1/2 text-white p-2 rounded-full z-10 transition-opacity duration-500 ${
+          className={`absolute left-[-96px] top-1/2 text-[96px] transform -translate-y-1/2 text-neutral-100 p-2 rounded-full z-10 transition-opacity duration-500 ${
             canScrollLeft ? "opacity-100" : "opacity-0"
           } hover:scale-110`}
           onClick={() => {
@@ -115,7 +115,7 @@ export default function Row(props) {
           <Card src="https://www.themoviedb.org/t/p/w220_and_h330_face/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg" />
         </div>
         <button
-          className={`absolute right-[-96px] top-1/2 text-[96px] transform -translate-y-1/2 text-white p-2 rounded-full z-10 transition-transform duration-300 ${
+          className={`absolute right-[-96px] top-1/2 text-[96px] transform -translate-y-1/2 text-neutral-100 p-2 rounded-full z-10 transition-transform duration-300 ${
             canScrollRight ? "opacity-100" : "opacity-0"
           } hover:scale-110`}
           onClick={() => {

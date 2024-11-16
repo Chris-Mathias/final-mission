@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        "blue-aero": "#2B4372"
       },
       fontFamily: {
         poppins: ["Poppins"],
