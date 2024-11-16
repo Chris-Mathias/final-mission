@@ -1,9 +1,10 @@
-import Catalog from '../pages/catalog';
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <>
-      <Catalog />
-    </>
+    <div>
+      <h1>Home</h1>
+      <Link href="/catalog">Catalog</Link>
+    </div>
   );
 }

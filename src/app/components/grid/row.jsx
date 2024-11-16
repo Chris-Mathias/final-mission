@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 
-import "../../../app/globals.css";
+import "../../globals.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
