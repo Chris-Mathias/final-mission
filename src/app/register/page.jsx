@@ -1,31 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/auth-context";
 
-export default function Login() {
+export default function Register() {
   const router = useRouter();
-  const { login, isAuthenticated, loading } = useAuth();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const fakeToken = "fakeToken";
 
-  useEffect(() => {
-    if (!loading && isAuthenticated) {
-      router.push("/profile-selection");
-    }
-  }, [isAuthenticated, loading, router]);
-
-  const handleLogin = () => {
-    if (!email || !password) {
+  const handleRegister = () => {
+    if (!email || !password || !confirmPassword) {
       setError("Por favor, preencha todos os campos.");
-    } else if (email != "admin" || password != "admin") {
-      setError("Email ou senha incorretos.");
+    } else if (password !== confirmPassword) {
+      setError("As senhas não coincidem.");
     } else {
       setError("");
+      console.log("Login:", email, password);
       login(fakeToken);
     }
     setEmail("");
@@ -34,13 +30,9 @@ export default function Login() {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      handleLogin();
+      handleRegister();
     }
   };
-
-  if (loading) {
-    return null;
-  }
 
   return (
     <div className="h-full">
@@ -80,18 +72,31 @@ export default function Login() {
             />
           </button>
         </div>
+        <div className="w-96 h-12 mt-1">
+          <input
+            type={showPassword ? "text" : "password"}
+            className="w-96 h-12 p-4 text-lg font-poppins text-neutral-100 bg-neutral-800 rounded-lg"
+            placeholder="Confirme a Senha"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
         {error && <p className="text-red-500 mt-2">{error}</p>}
-        <button
-          onClick={handleLogin}
-          className="w-96 h-12 mt-4 bg-blue-aero text-lg font-poppins font-bold text-neutral-100 rounded-lg"
-        >
-          Entrar
+        <button className="w-96 h-12 mt-4 bg-neutral-100 text-lg font-poppins text-neutral-950 rounded-lg">
+          Adicionar método de pagamento
         </button>
         <button
-          onClick={() => router.push("/register")}
-          className="w-96 h-12 mt-1 bg-blue-aero text-lg font-poppins font-bold text-neutral-100 rounded-lg"
+          onClick={handleRegister}
+          className="w-96 h-12 mt-4 bg-blue-aero text-lg font-poppins font-bold text-neutral-100 rounded-lg"
         >
           Cadastrar-se
+        </button>
+        <button
+          onClick={() => router.push("/login")}
+          className="w-96 h-12 mt-1 bg-blue-aero text-lg font-poppins font-bold text-neutral-100 rounded-lg"
+        >
+          Voltar ao login
         </button>
         <button className="flex w-96 h-12 mt-4 bg-blue-aero text-lg font-poppins font-bold text-neutral-100 rounded-lg">
           <div className="flex items-center justify-center w-[336px] h-12">

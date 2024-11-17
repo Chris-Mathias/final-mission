@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("authToken");
+    const storedToken = sessionStorage.getItem("authToken");
     if (storedToken) {
       setIsAuthenticated(true);
     }
@@ -18,15 +18,15 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userToken) => {
-    localStorage.setItem("authToken", userToken);
+    sessionStorage.setItem("authToken", userToken);
     setIsAuthenticated(true);
-    router.push("/catalog");
+    router.push("/profile-selection");
   };
 
   const logout = () => {
-    localStorage.removeItem("authToken");
+    sessionStorage.removeItem("authToken");
     setIsAuthenticated(false);
-    router.push("/");
+    router.push("/login");
   };
 
   return (
