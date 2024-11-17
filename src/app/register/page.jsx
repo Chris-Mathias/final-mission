@@ -6,31 +6,30 @@ import { useAuth } from "../contexts/auth-context";
 
 export default function Register() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { handleRegister, errorMessage } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const fakeToken = "fakeToken";
 
-  const handleRegister = () => {
-    if (!email || !password || !confirmPassword) {
+  const handleSubmit = () => {
+    if (!name || !email || !password || !confirmPassword) {
       setError("Por favor, preencha todos os campos.");
-    } else if (password !== confirmPassword) {
-      setError("As senhas não coincidem.");
     } else {
       setError("");
-      console.log("Login:", email, password);
-      login(fakeToken);
+      handleRegister(name, email, password);
     }
+    setName("");
     setEmail("");
     setPassword("");
+    setConfirmPassword("");
   };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      handleRegister();
+      handleSubmit();
     }
   };
 
@@ -43,6 +42,15 @@ export default function Register() {
         <div className="w-96 h-12">
           <input
             autoFocus
+            className="w-96 h-12 p-4 text-lg font-poppins text-neutral-100 bg-neutral-800 rounded-lg"
+            placeholder="Nome"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
+        <div className="w-96 h-12 mt-1">
+          <input
             className="w-96 h-12 p-4 text-lg font-poppins text-neutral-100 bg-neutral-800 rounded-lg"
             placeholder="Email"
             value={email}
@@ -83,11 +91,12 @@ export default function Register() {
           />
         </div>
         {error && <p className="text-red-500 mt-2">{error}</p>}
+        {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
         <button className="w-96 h-12 mt-4 bg-neutral-100 text-lg font-poppins text-neutral-950 rounded-lg">
           Adicionar método de pagamento
         </button>
         <button
-          onClick={handleRegister}
+          onClick={handleSubmit}
           className="w-96 h-12 mt-4 bg-blue-aero text-lg font-poppins font-bold text-neutral-100 rounded-lg"
         >
           Cadastrar-se

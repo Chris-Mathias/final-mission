@@ -1,21 +1,25 @@
-"use client";
-
 import { useRef, useEffect, useState } from "react";
-
-import "../../globals.css";
+import { useAuth } from '@/app/contexts/auth-context';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Card from "./card";
 
-export default function Row(props) {
+export default function Row({ name }) {
+  const { catalog } = useAuth();
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const randomCatalogRef = useRef([]);
+
   let scrolling = false;
+
+  useEffect(() => {
+    if (catalog && catalog.length > 0 && randomCatalogRef.current.length === 0) {
+      randomCatalogRef.current = [...catalog].sort(() => 0.5 - Math.random()).slice(0, 10);
+    }
+  }, [catalog]);
+
+  const randomCatalog = randomCatalogRef.current;
 
   const smoothScroll = (element, delta) => {
     let start = element.scrollLeft;
@@ -80,7 +84,7 @@ export default function Row(props) {
   return (
     <div className="relative flex flex-col gap-6">
       <h1 className="ml-8 text-neutral-100 text-2xl font-poppins font-bold">
-        {props.name}:
+        {name}:
       </h1>
       <div className="relative">
         <button
@@ -101,18 +105,9 @@ export default function Row(props) {
           ref={scrollRef}
           className="flex flex-grow gap-12 overflow-x-scroll scrollbar-hide p-2"
         >
-          <Card src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg" />
-          <Card src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/4t2BRfqHaSKUypPV09LkMjEECpQ.jpg" />
-          <Card src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/rdXhVZvUegRqgMFFw6j2T76lLRl.jpg" />
-          <Card src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/z1hNoGhH12ISnPzPqMOq1QLVGdu.jpg" />
-          <Card src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/w5YVZQSR8yTOUFTS46QSUhnsYgK.jpg" />
-          <Card src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/x5KXbN1f0YpG2Hra1ghlMBe6Zxq.jpg" />
-          <Card src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/tYLecM3WSEjlkKhkGiH5G68Dprm.jpg" />
-          <Card src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/7seqaCaaXDNUHOx4DqwpoOH8pPa.jpg" />
-          <Card src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/abf8tHznhSvl9BAElD2cQeRr7do.jpg" />
-          <Card src="https://www.themoviedb.org/t/p/w220_and_h330_face/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg" />
-          <Card src="https://www.themoviedb.org/t/p/w220_and_h330_face/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg" />
-          <Card src="https://www.themoviedb.org/t/p/w220_and_h330_face/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg" />
+          {randomCatalog.map((item) => (
+            <Card key={item.id} src={item.img} />
+          ))}
         </div>
         <button
           className={`absolute right-[-96px] top-1/2 text-[96px] transform -translate-y-1/2 text-neutral-100 p-2 rounded-full z-10 transition-transform duration-300 ${

@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/auth-context";
@@ -7,7 +8,7 @@ import Navbar from "../components/navbar";
 import Grid from "../components/grid";
 
 export default function Catalog() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, fetchCatalog } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -15,6 +16,10 @@ export default function Catalog() {
       router.push("/login");
     }
   }, [isAuthenticated, loading, router]);
+
+  useEffect(() => {
+    fetchCatalog();
+  }, [fetchCatalog]);
 
   if (loading) {
     return null;

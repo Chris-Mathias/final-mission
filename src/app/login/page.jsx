@@ -6,12 +6,11 @@ import { useAuth } from "../contexts/auth-context";
 
 export default function Login() {
   const router = useRouter();
-  const { login, isAuthenticated, loading } = useAuth();
+  const { handleLogin, isAuthenticated, loading, errorMessage } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const fakeToken = "fakeToken";
 
   useEffect(() => {
     if (!loading && isAuthenticated) {
@@ -19,14 +18,12 @@ export default function Login() {
     }
   }, [isAuthenticated, loading, router]);
 
-  const handleLogin = () => {
+  const handleSubmit = () => {
     if (!email || !password) {
       setError("Por favor, preencha todos os campos.");
-    } else if (email != "admin" || password != "admin") {
-      setError("Email ou senha incorretos.");
     } else {
       setError("");
-      login(fakeToken);
+      handleLogin(email, password);
     }
     setEmail("");
     setPassword("");
@@ -34,7 +31,7 @@ export default function Login() {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      handleLogin();
+      handleSubmit();
     }
   };
 
@@ -81,8 +78,9 @@ export default function Login() {
           </button>
         </div>
         {error && <p className="text-red-500 mt-2">{error}</p>}
+        {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
         <button
-          onClick={handleLogin}
+          onClick={handleSubmit}
           className="w-96 h-12 mt-4 bg-blue-aero text-lg font-poppins font-bold text-neutral-100 rounded-lg"
         >
           Entrar

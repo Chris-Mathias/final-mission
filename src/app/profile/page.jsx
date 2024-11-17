@@ -10,7 +10,7 @@ import { useAuth } from "../contexts/auth-context";
 
 export default function Profile() {
   const router = useRouter();
-  const { logout } = useAuth();
+  const { handleLogout } = useAuth();
 
   return (
     <div className="h-full">
@@ -63,7 +63,7 @@ export default function Profile() {
               Alterar Método de Pagamento
             </button>
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="w-56 h-14 bg-red-500 text-2xl font-poppins text-neutral-100 rounded-lg">
               Sair
             </button>
