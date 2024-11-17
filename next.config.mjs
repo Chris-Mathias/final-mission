@@ -3,8 +3,8 @@ export default {
     return [
       {
         source: '/',
-        destination: '/catalog',
-        permanent: true, // ou false se não for permanente
+        destination: '/login',
+        permanent: true,
       },
     ]
   },

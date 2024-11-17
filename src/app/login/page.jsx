@@ -2,13 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../contexts/auth-context";
 
 export default function Login() {
   const router = useRouter();
+  const { login, isAuthenticated, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState("");
+  const fakeToken = "fakeToken";
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -17,15 +20,21 @@ export default function Login() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!loading && isAuthenticated) {
+      router.push("/catalog");
+    }
+  }, [isAuthenticated, loading, router]);
+
   const handleLogin = () => {
     if (!email || !senha) {
-      setErrorMessage("Por favor, preencha o email e a senha.");
+      setError("Por favor, preencha o email e a senha.");
     } else if (email != "admin" || senha != "admin") {
-      setErrorMessage("Email ou senha incorretos.");
+      setError("Email ou senha incorretos.");
     } else {
-      setErrorMessage("");
+      setError("");
       console.log("Login:", email, senha);
-      router.push("/catalog");
+      login(fakeToken);
     }
     setEmail("");
     setSenha("");
@@ -36,6 +45,10 @@ export default function Login() {
       handleLogin();
     }
   };
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <div className="h-full">
@@ -72,7 +85,7 @@ export default function Login() {
             />
           </button>
         </div>
-        {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
+        {error && <p className="text-red-500 mt-2">{error}</p>}
         <button
           onClick={handleLogin}
           className="w-96 h-12 mt-4 bg-blue-aero text-lg font-poppins font-bold text-neutral-100 rounded-lg"
