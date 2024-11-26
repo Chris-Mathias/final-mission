@@ -2,13 +2,19 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../contexts/auth-context";
 
-import ProfileCard from "../components/profile-card";
+import { useData } from "../contexts/data-context";
+import ProfileCard from "../components/profile-info/profile-card";
+import SimpleNavbar from "../components/navbar/simple-navbar";
 
-export default function ProfileSelection () {
+export default function ProfileSelection() {
   const router = useRouter();
-  const { isAuthenticated, loading, profiles, fetchProfiles } = useAuth();
+  const {
+    isAuthenticated,
+    loading,
+    profiles,
+    fetchProfiles,
+  } = useData();
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -26,12 +32,13 @@ export default function ProfileSelection () {
 
   return isAuthenticated ? (
     <div className="h-full">
-      <div className="flex items-center justify-center h-16">
-        <img className="h-12" src="aeroflix.svg" alt="Aeroflix Logo" />
-      </div>
+      <SimpleNavbar />
       <div className="flex gap-12 items-center justify-center pb-32 min-h-[calc(100vh-64px)]">
         {profiles.map((profile) => (
-          <ProfileCard key={profile.id} avatar={profile.img} name={profile.name} />
+          <ProfileCard
+            key={profile.id}
+            profile={profile}
+          />
         ))}
       </div>
     </div>

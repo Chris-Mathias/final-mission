@@ -2,13 +2,14 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../contexts/auth-context";
+
+import { useData } from "../contexts/data-context";
 
 import Navbar from "../components/navbar";
 import Grid from "../components/grid";
 
 export default function Catalog() {
-  const { isAuthenticated, loading, fetchCatalog } = useAuth();
+  const { isAuthenticated, loading, fetchCatalog } = useData();
   const router = useRouter();
 
   useEffect(() => {

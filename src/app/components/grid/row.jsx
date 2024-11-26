@@ -1,11 +1,18 @@
 import { useRef, useEffect, useState } from "react";
-import { useAuth } from '@/app/contexts/auth-context';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import Card from "./card";
 
-export default function Row({ name }) {
-  const { catalog } = useAuth();
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+
+import { useData } from "@/app/contexts/data-context";
+import Card from "./card";
+import ScrollButton from "./scroll-button";
+import Text from "../text";
+
+export default function Row(props) {
+  const { catalog } = useData();
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -14,8 +21,14 @@ export default function Row({ name }) {
   let scrolling = false;
 
   useEffect(() => {
-    if (catalog && catalog.length > 0 && randomCatalogRef.current.length === 0) {
-      randomCatalogRef.current = [...catalog].sort(() => 0.5 - Math.random()).slice(0, 10);
+    if (
+      catalog &&
+      catalog.length > 0 &&
+      randomCatalogRef.current.length === 0
+    ) {
+      randomCatalogRef.current = [...catalog]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 20);
     }
   }, [catalog]);
 
@@ -83,24 +96,19 @@ export default function Row({ name }) {
 
   return (
     <div className="relative flex flex-col gap-6">
-      <h1 className="ml-8 text-neutral-100 text-2xl font-poppins font-bold">
-        {name}:
-      </h1>
+      <Text className="ml-8 font-bold">
+        {props.name}:
+      </Text>
       <div className="relative">
-        <button
-          className={`absolute left-[-96px] top-1/2 text-[96px] transform -translate-y-1/2 text-neutral-100 p-2 rounded-full z-10 transition-opacity duration-500 ${
-            canScrollLeft ? "opacity-100" : "opacity-0"
-          } hover:scale-110`}
-          onClick={() => {
-            if (scrollRef.current) {
-              smoothScroll(scrollRef.current, -960);
-            }
-          }}
-          style={{ transition: "opacity 0.5s ease-in-out" }}
+        <ScrollButton
+          right={false}
+          canScroll={canScrollLeft}
+          scrollRef={scrollRef}
+          smoothScroll={smoothScroll}
+          scrollAmount={-960}
         >
           <FontAwesomeIcon icon={faChevronLeft} />
-        </button>
-
+        </ScrollButton>
         <div
           ref={scrollRef}
           className="flex flex-grow gap-12 overflow-x-scroll scrollbar-hide p-2"
@@ -109,19 +117,15 @@ export default function Row({ name }) {
             <Card key={item.id} src={item.img} />
           ))}
         </div>
-        <button
-          className={`absolute right-[-96px] top-1/2 text-[96px] transform -translate-y-1/2 text-neutral-100 p-2 rounded-full z-10 transition-transform duration-300 ${
-            canScrollRight ? "opacity-100" : "opacity-0"
-          } hover:scale-110`}
-          onClick={() => {
-            if (scrollRef.current) {
-              smoothScroll(scrollRef.current, 960);
-            }
-          }}
-          style={{ transition: "opacity 0.5s ease-in-out" }}
+        <ScrollButton
+          right={true}
+          canScroll={canScrollRight}
+          scrollRef={scrollRef}
+          smoothScroll={smoothScroll}
+          scrollAmount={960}
         >
           <FontAwesomeIcon icon={faChevronRight} />
-        </button>
+        </ScrollButton>
       </div>
     </div>
   );
